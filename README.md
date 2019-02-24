@@ -1,5 +1,7 @@
 # ansible-role-docker
 
+[![Build Status](https://travis-ci.org/BadFever/ansible-role-docker.svg?branch=master)](https://travis-ci.org/BadFever/ansible-role-docker)
+
 Installs [Docker]([https://www.packer.io](https://www.docker.com/)).
 
 ## Requirements
