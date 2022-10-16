@@ -1,0 +1,28 @@
+---
+- include_tasks: setup-debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Install Docker packages.
+  package:
+    name: "{{ docker_packages }}"
+    state: present
+  notify:  restart docker
+
+- name: Install dependencies for Docker Python modules (To manage docker with ansible).
+  package:
+    name:
+      - software-properties-common
+      - python3-pip
+      - virtualenv
+      - python3-setuptools
+    state: present
+  when: docker_ansible_managed
+
+- name: Install Docker Python modules. (To manage docker with ansible).
+  pip:
+    name: docker
+    state: present
+  when: docker_ansible_managed
+
+- name: Ensure handlers are notified
+  meta: flush_handlers
