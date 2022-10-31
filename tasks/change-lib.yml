@@ -1,0 +1,28 @@
+---
+- name: Check wether docker dir already linked.
+  stat:
+    path: "/var/lib/docker"
+  register: docker_link
+
+- name: Stop docker
+  systemd:
+    name: docker.service
+    state: stopped
+  when: links.stat.islnk is not defined or not links.stat.islnk
+
+- name: Create data directory
+  ansible.builtin.file:
+    path: "{{ docker_data_path }}"
+    state: directory
+
+- name: Move contents from /var/lib/docker to "{{ docker_data_path }}"
+  debug:
+    msg: "Needs implementing"
+
+- name: Delete source contents.
+  debug:
+    msg: "Needs implementing"
+
+- name: Create symlink at /var/lib/docker to "{{ docker_data_path }}"
+  debug:
+    msg: "Needs implementing"

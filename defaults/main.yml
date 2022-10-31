@@ -17,3 +17,5 @@ docker_apt_gpg_key: "{{ docker_repo_url }}/{{ ansible_distribution | lower }}/gp
 
 docker_ansible_managed: true
 
+docker_data_path: ""
+

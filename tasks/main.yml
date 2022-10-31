@@ -24,5 +24,8 @@
     state: present
   when: docker_ansible_managed
 
+- include_tasks: change-data.yml
+  when: docker_data_path != ''
+
 - name: Ensure handlers are notified
   meta: flush_handlers
