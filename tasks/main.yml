@@ -1,11 +1,11 @@
 ---
-- include_tasks: setup-debian.yml
+- include_tasks: setup_debian.yml
   when: ansible_os_family == 'Debian'
 
 - name: Install Docker packages.
   package:
     name: "{{ docker_packages }}"
-    state: present
+    state: "{{ docker_packages_state }}"
   notify:  restart docker
 
 - name: Install dependencies for Docker Python modules (To manage docker with ansible).
@@ -18,14 +18,25 @@
     state: present
   when: docker_ansible_managed
 
+- name: Install docker-compose plugin.
+  package:
+    name: "{{ docker_compose_package }}"
+    state: "{{ docker_compose_package_state }}"
+  notify: restart docker
+  when: "docker_install_compose_plugin | bool == true and (ansible_version.full is version_compare('2.12', '<') or ansible_os_family not in ['Debian'])"
+
 - name: Install Docker Python modules. (To manage docker with ansible).
   pip:
     name: docker
     state: present
   when: docker_ansible_managed
 
-- include_tasks: change-data.yml
-  when: docker_data_path != ''
+- name: Ensure Docker is started and enabled at boot.
+  service:
+    name: docker
+    state: "{{ docker_service_state }}"
+    enabled: "{{ docker_service_enabled }}"
+  when: docker_service_manage | bool
 
 - name: Ensure handlers are notified
   meta: flush_handlers

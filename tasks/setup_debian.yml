@@ -19,10 +19,10 @@
     state: present
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('20.04', '>=')
 
-- name: Add Docker apt gpg Key
+- name: Add Docker apt key.
   ansible.builtin.get_url:
     url: "{{ docker_apt_gpg_key }}"
-    dest: /etc/apt/keyrings/docker.gpg
+    dest: /etc/apt/trusted.gpg.d/docker.asc
     mode: '0644'
     force: true
 
@@ -30,3 +30,4 @@
   apt_repository:
     repo: "{{ docker_apt_repository }}"
     state: present
+    update_cache: true
