@@ -23,7 +23,7 @@
     name: "{{ docker_compose_package }}"
     state: "{{ docker_compose_package_state }}"
   notify: restart docker
-  when: "docker_install_compose_plugin | bool == true and (ansible_version.full is version_compare('2.12', '<') or ansible_os_family not in ['Debian'])"
+  when: "docker_install_compose_plugin | bool == true"
 
 - name: Install Docker Python modules. (To manage docker with ansible).
   pip:
